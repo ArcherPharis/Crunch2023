@@ -43,6 +43,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void DeathStarted();
 
+	void ChangeHeadshotImage();
+
 protected:
 	UFUNCTION(BlueprintCallable, Category = "InGameUI")
 	void ResumeBtnClicked();
@@ -59,4 +61,8 @@ protected:
 	virtual void NativeConstruct() override;
 
 	class ACrunchTimeGameModeBase* GameMode;
+
+private:
+	UPROPERTY(meta = (BindWidget))
+	class UHeadshot* headShotImage;
 };

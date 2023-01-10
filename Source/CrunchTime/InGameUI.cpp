@@ -4,6 +4,12 @@
 #include "InGameUI.h"
 #include "CrunchTimeGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Headshot.h"
+
+void UInGameUI::ChangeHeadshotImage()
+{
+	headShotImage->DesaturateImage();
+}
 
 void UInGameUI::ResumeBtnClicked()
 {

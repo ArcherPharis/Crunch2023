@@ -66,6 +66,7 @@ void ACTPlayerController::AbilityActivated(UGameplayAbility* ability)
 
 void ACTPlayerController::PawnDeathStarted()
 {
+	inGameUI->ChangeHeadshotImage();
 	inGameUI->DeathStarted();
 }
 
@@ -78,6 +79,7 @@ void ACTPlayerController::PawnDead()
 
 	bIsPawnDead = true;
 	UGameplayStatics::SetGamePaused(this, true);
+	
 	inGameUI->SwitchToDeathUI();
 	SetInputMode(FInputModeGameAndUI());
 	SetShowMouseCursor(true);
