@@ -23,6 +23,7 @@ protected:
 
 public:
 	void DesaturateImage();
+	void ReactToTakingDamage();
 
 private:
 	class FPreviewScene* renderScene;
@@ -46,7 +47,10 @@ private:
 	int frameRate = 24;
 
 	FTimerHandle RefreshTimer;
+	FTimerHandle ResetImageTimer;
+
 
 	void RefreshRender();
+	void ResetImageColor();
 	
 };

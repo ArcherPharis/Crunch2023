@@ -14,6 +14,7 @@
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnAbilityGiven, const FGameplayAbilitySpec*);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterDeath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterDeathStarted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterTookDamage);
 
 
 UCLASS()
@@ -140,6 +141,7 @@ private:
 public:
 		FOnCharacterDeath OnCharacterDeath;
 		FOnCharacterDeathStarted OnCharacterDeathStarted;
+		FOnCharacterTookDamage OnCharacterTookDamage;
 
 private:
 	void StartDeathSequence();

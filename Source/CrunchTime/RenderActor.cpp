@@ -12,6 +12,8 @@ ARenderActor::ARenderActor()
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComp"));
 	Capturer = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("Capturer"));
 	Capturer->SetupAttachment(RootComponent);
+	mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
+	mesh->SetupAttachment(RootComponent);
 
 
 }
@@ -24,6 +26,11 @@ void ARenderActor::AssignRenderTarget(UTextureRenderTarget2D* renderTarget)
 void ARenderActor::UpdateCapture(FSceneInterface* scene)
 {
 	Capturer->UpdateDeferredCaptures(scene);
+}
+
+void ARenderActor::PlayReactMontage()
+{
+	mesh->GetAnimInstance()->Montage_Play(reactMontage);
 }
 
 // Called when the game starts or when spawned

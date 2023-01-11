@@ -44,6 +44,8 @@ public:
 	void DeathStarted();
 
 	void ChangeHeadshotImage();
+	void HeadshotDamageReact();
+
 
 protected:
 	UFUNCTION(BlueprintCallable, Category = "InGameUI")

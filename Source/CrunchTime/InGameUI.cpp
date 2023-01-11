@@ -11,6 +11,11 @@ void UInGameUI::ChangeHeadshotImage()
 	headShotImage->DesaturateImage();
 }
 
+void UInGameUI::HeadshotDamageReact()
+{
+	headShotImage->ReactToTakingDamage();
+}
+
 void UInGameUI::ResumeBtnClicked()
 {
 	OnResumeBtnClicked.Broadcast();

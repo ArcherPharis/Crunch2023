@@ -63,9 +63,27 @@ void UHeadshot::DesaturateImage()
 	HeadShotImage->SetOpacity(0.8f);
 }
 
+void UHeadshot::ReactToTakingDamage()
+{
+	
+	HeadShotImage->SetBrushTintColor(FLinearColor(1.0f,0,0));
+	renderActor->PlayReactMontage();
+	if (!GetWorld()->GetTimerManager().IsTimerActive(ResetImageTimer))
+	{
+		GetWorld()->GetTimerManager().SetTimer(ResetImageTimer, this, &UHeadshot::ResetImageColor, 0.2f, false);
+	}
+
+}
+
 void UHeadshot::RefreshRender()
 {
 
 	if(renderScene)
 	renderActor->UpdateCapture(renderScene->GetWorld()->Scene);
+}
+
+void UHeadshot::ResetImageColor()
+{
+	HeadShotImage->SetBrushTintColor(FLinearColor(1.0f, 1.0f, 1.0f));
+
 }

@@ -31,6 +31,7 @@ void ACTPlayerController::OnPossess(APawn* InPawn)
 		Crunch->GetAbilitySystemComponent()->AbilityCommittedCallbacks.AddUObject(this, &ACTPlayerController::AbilityActivated);
 		Crunch->OnCharacterDeath.AddDynamic(this, &ACTPlayerController::PawnDead);
 		Crunch->OnCharacterDeathStarted.AddDynamic(this, &ACTPlayerController::PawnDeathStarted);
+		Crunch->OnCharacterTookDamage.AddDynamic(this, &ACTPlayerController::PawnTookDamage);
 	}
 }
 
@@ -83,6 +84,11 @@ void ACTPlayerController::PawnDead()
 	inGameUI->SwitchToDeathUI();
 	SetInputMode(FInputModeGameAndUI());
 	SetShowMouseCursor(true);
+}
+
+void ACTPlayerController::PawnTookDamage()
+{
+	inGameUI->HeadshotDamageReact();
 }
 
 void ACTPlayerController::TogglePause()

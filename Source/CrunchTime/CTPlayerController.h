@@ -51,6 +51,9 @@ private:
 	void PawnDeathStarted();
 	UFUNCTION()
 	void PawnDead();
+	UFUNCTION()
+	void PawnTookDamage();
+
 	bool bIsPawnDead{false};
 
 	/**************************************************************************************/

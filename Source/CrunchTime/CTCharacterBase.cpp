@@ -113,9 +113,15 @@ FGameplayAbilitySpec* ACTCharacterBase::GiveAbility(const TSubclassOf<class UGam
 void ACTCharacterBase::HealthChanged(const FOnAttributeChangeData& AttributeData)
 {
 	BP_HealthUpdated(AttributeData.NewValue, AttributeData.NewValue - AttributeData.OldValue, AttributeSet->GetMaxHealth());
+	
 	if (AttributeData.NewValue <= 0)
 	{
 		StartDeathSequence();
+	}
+
+	if (AttributeData.NewValue < AttributeData.OldValue && !bIsDead && AttributeData.NewValue != AttributeData.OldValue)
+	{
+		OnCharacterTookDamage.Broadcast();
 	}
 }
 
