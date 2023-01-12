@@ -37,9 +37,15 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 private:
 	class ACTCrunch* Crunch;
-	/* - Heath & Stamina - */
+	/* - stats - */
 	void HealthUpdated(const FOnAttributeChangeData& AttributeData);
 	void StaminaUpdated(const FOnAttributeChangeData& AttributeData);
+	void StengthUpdated(const FOnAttributeChangeData& AttributeData);
+	void AttackDamageUpdated(const FOnAttributeChangeData& AttributeData);
+	void IntelligenceUpdated(const FOnAttributeChangeData& AttributeData);
+	void ArmorUpdated(const FOnAttributeChangeData& AttributeData);
+	void WalkSpeedUpdated(const FOnAttributeChangeData& AttributeData);
+
 
 	/* - Pawn Ability - */
 	void PawnAddAbility(const FGameplayAbilitySpec* SpecHandle);
@@ -51,6 +57,9 @@ private:
 	void PawnDeathStarted();
 	UFUNCTION()
 	void PawnDead();
+	UFUNCTION()
+	void PawnTookDamage();
+
 	bool bIsPawnDead{false};
 
 	/**************************************************************************************/

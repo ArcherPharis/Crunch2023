@@ -38,6 +38,35 @@ public:
 	FGameplayAttributeData MaxStamina;
 	ATTRIBUTE_ACCESSORS(UCTAttributeSet, MaxStamina);
 
+	UPROPERTY()
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UCTAttributeSet, Strength);
+	UPROPERTY()
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UCTAttributeSet, Intelligence);
+	UPROPERTY()
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UCTAttributeSet, Armor);
+	UPROPERTY()
+	FGameplayAttributeData AttackDamage;
+	ATTRIBUTE_ACCESSORS(UCTAttributeSet, AttackDamage);
+
+	UPROPERTY()
+	FGameplayAttributeData MaxWalkSpeed;
+	ATTRIBUTE_ACCESSORS(UCTAttributeSet, MaxWalkSpeed);
+
+	UPROPERTY()
+	FGameplayAttributeData Experience;
+	ATTRIBUTE_ACCESSORS(UCTAttributeSet, Experience);
+
+	UPROPERTY()
+	FGameplayAttributeData NextLevelExperience;
+	ATTRIBUTE_ACCESSORS(UCTAttributeSet, NextLevelExperience);
+
+	UPROPERTY()
+	FGameplayAttributeData Level;
+	ATTRIBUTE_ACCESSORS(UCTAttributeSet, Level);
+
 private:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 };

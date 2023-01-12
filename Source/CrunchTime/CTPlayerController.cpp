@@ -26,11 +26,18 @@ void ACTPlayerController::OnPossess(APawn* InPawn)
 	{
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetHealthAttribute()).AddUObject(this, &ACTPlayerController::HealthUpdated);
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetStaminaAttribute()).AddUObject(this, &ACTPlayerController::StaminaUpdated);
-		Crunch->ApplayInitialEffect();
+		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetStrengthAttribute()).AddUObject(this, &ACTPlayerController::StengthUpdated);
+		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetAttackDamageAttribute()).AddUObject(this, &ACTPlayerController::AttackDamageUpdated);
+		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetIntelligenceAttribute()).AddUObject(this, &ACTPlayerController::IntelligenceUpdated);
+		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetArmorAttribute()).AddUObject(this, &ACTPlayerController::ArmorUpdated);
+		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetMaxWalkSpeedAttribute()).AddUObject(this, &ACTPlayerController::WalkSpeedUpdated);
+
+
 		Crunch->OnAbilityGiven.AddUObject(this, &ACTPlayerController::PawnAddAbility);
 		Crunch->GetAbilitySystemComponent()->AbilityCommittedCallbacks.AddUObject(this, &ACTPlayerController::AbilityActivated);
 		Crunch->OnCharacterDeath.AddDynamic(this, &ACTPlayerController::PawnDead);
 		Crunch->OnCharacterDeathStarted.AddDynamic(this, &ACTPlayerController::PawnDeathStarted);
+		Crunch->OnCharacterTookDamage.AddDynamic(this, &ACTPlayerController::PawnTookDamage);
 	}
 }
 
@@ -52,6 +59,35 @@ void ACTPlayerController::HealthUpdated(const FOnAttributeChangeData& AttributeD
 void ACTPlayerController::StaminaUpdated(const FOnAttributeChangeData& AttributeData)
 {
 	inGameUI->UpdateStamina(AttributeData.NewValue, Crunch->GetAttributeSet()->GetMaxStamina());
+}
+
+void ACTPlayerController::StengthUpdated(const FOnAttributeChangeData& AttributeData)
+{
+	inGameUI->UpdateStrength(AttributeData.NewValue);
+}
+
+void ACTPlayerController::AttackDamageUpdated(const FOnAttributeChangeData& AttributeData)
+{
+	inGameUI->UpdateAttackPower(AttributeData.NewValue);
+
+}
+
+void ACTPlayerController::IntelligenceUpdated(const FOnAttributeChangeData& AttributeData)
+{
+	inGameUI->UpdateIntelligence(AttributeData.NewValue);
+
+}
+
+void ACTPlayerController::ArmorUpdated(const FOnAttributeChangeData& AttributeData)
+{
+	inGameUI->UpdateArmor(AttributeData.NewValue);
+
+}
+
+void ACTPlayerController::WalkSpeedUpdated(const FOnAttributeChangeData& AttributeData)
+{
+	inGameUI->UpdateWalkSpeed(AttributeData.NewValue);
+
 }
 
 void ACTPlayerController::PawnAddAbility(const FGameplayAbilitySpec* SpecHandle)
@@ -83,6 +119,11 @@ void ACTPlayerController::PawnDead()
 	inGameUI->SwitchToDeathUI();
 	SetInputMode(FInputModeGameAndUI());
 	SetShowMouseCursor(true);
+}
+
+void ACTPlayerController::PawnTookDamage()
+{
+	inGameUI->HeadshotDamageReact();
 }
 
 void ACTPlayerController::TogglePause()

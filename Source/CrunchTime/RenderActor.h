@@ -19,6 +19,10 @@ public:
 
 	void UpdateCapture(FSceneInterface* scene);
 
+	void PlayReactMontage();
+
+	USkeletalMeshComponent* GetTAMesh() const { return mesh; }
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -29,7 +33,13 @@ public:
 
 private:
 
-UPROPERTY(VisibleDefaultsOnly, Category = "RenderActor")
-class USceneCaptureComponent2D* Capturer;
+	UPROPERTY(VisibleDefaultsOnly, Category = "RenderActor")
+	class USceneCaptureComponent2D* Capturer;
+
+	UPROPERTY(EditDefaultsOnly, Category = "RenderActor")
+	USkeletalMeshComponent* mesh;
+
+	UPROPERTY(EditDefaultsOnly, Category = "RenderActor")
+	UAnimMontage* reactMontage;
 
 };

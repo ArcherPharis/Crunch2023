@@ -26,6 +26,21 @@ public:
 	void UpdateStamina(float newVal, float maxVal);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateStrength(int newVal);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateAttackPower(int newVal);
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateIntelligence(int newVal);
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateArmor(int newVal);
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateWalkSpeed(int newVal);
+
+
+
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void AbilityAdded(UGameplayAbility* Ability);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
@@ -44,6 +59,8 @@ public:
 	void DeathStarted();
 
 	void ChangeHeadshotImage();
+	void HeadshotDamageReact();
+
 
 protected:
 	UFUNCTION(BlueprintCallable, Category = "InGameUI")

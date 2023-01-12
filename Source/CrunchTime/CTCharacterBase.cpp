@@ -25,17 +25,29 @@ ACTCharacterBase::ACTCharacterBase()
 	PerceptionStimuliComp = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("PerceptionStimuliComp");
 }
 
-void ACTCharacterBase::ApplayInitialEffect()
+void ACTCharacterBase::SetupAttributeChangeDelegate()
 {
+	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxHealthAttribute()).AddUObject(this, &ACTCharacterBase::MaxHealthChanged);
+	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxStaminaAttribute()).AddUObject(this, &ACTCharacterBase::MaxStaminaChanged);
 	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).AddUObject(this, &ACTCharacterBase::HealthChanged);
-	ApplyEffectToSelf(InitialEffect);
+	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxWalkSpeedAttribute()).AddUObject(this, &ACTCharacterBase::MaxWalkSpeedChanged);
+
+	
 }
 
-void ACTCharacterBase::ApplyRegenEffect()
+void ACTCharacterBase::ApplyLifetimeEffects()
 {
-	for (auto& RegenEffect : RegenEffects)
+	for (auto& RegenEffect : LifeTimeEffects)
 	{
-		ApplyEffectToSelf(RegenEffect);
+		ApplyEffectToSelf(RegenEffect , 1);
+	}
+}
+
+void ACTCharacterBase::ApplyInitialEffect()
+{
+	for (auto& effect : InitialEffects)
+	{
+		ApplyEffectToSelf(effect);
 	}
 }
 
@@ -64,8 +76,11 @@ void ACTCharacterBase::SetEanbleAiming(bool bEnableMoving)
 void ACTCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	ApplayInitialEffect();
-	ApplyRegenEffect();
+	
+	SetupAttributeChangeDelegate();
+	LevelUp();
+	ApplyLifetimeEffects();
+	ApplyInitialEffect();
 	GiveAbility(BasicAttackAbility, -1, false);
 	for (auto& abilityEntry : InitialAbilities)
 	{
@@ -74,10 +89,16 @@ void ACTCharacterBase::BeginPlay()
 	AbilitySystemComp->RegisterGameplayTagEvent(StunTag).AddUObject(this, &ACTCharacterBase::StunTagChanged);
 }
 
-void ACTCharacterBase::ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply)
+void ACTCharacterBase::ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply, int level)
 {
-	FGameplayEffectSpecHandle Spec = AbilitySystemComp->MakeOutgoingSpec(effectToApply, -1, AbilitySystemComp->MakeEffectContext());
+	FGameplayEffectSpecHandle Spec = AbilitySystemComp->MakeOutgoingSpec(effectToApply, level, AbilitySystemComp->MakeEffectContext());
 	AbilitySystemComp->ApplyGameplayEffectSpecToSelf(*Spec.Data);
+}
+
+void ACTCharacterBase::LevelUp()
+{
+	float currentLevel = AttributeSet->GetLevel();
+	ApplyEffectToSelf(levelUpEffect, currentLevel + 1);
 }
 
 void ACTCharacterBase::BasicAttack()
@@ -113,10 +134,42 @@ FGameplayAbilitySpec* ACTCharacterBase::GiveAbility(const TSubclassOf<class UGam
 void ACTCharacterBase::HealthChanged(const FOnAttributeChangeData& AttributeData)
 {
 	BP_HealthUpdated(AttributeData.NewValue, AttributeData.NewValue - AttributeData.OldValue, AttributeSet->GetMaxHealth());
+	
 	if (AttributeData.NewValue <= 0)
 	{
 		StartDeathSequence();
 	}
+
+	if (AttributeData.NewValue < AttributeData.OldValue && !bIsDead && AttributeData.NewValue != AttributeData.OldValue)
+	{
+		OnCharacterTookDamage.Broadcast();
+	}
+<<<<<<< HEAD
+}
+
+void ACTCharacterBase::MaxHealthChanged(const FOnAttributeChangeData& AttributeData)
+{
+	if (AttributeData.NewValue == AttributeData.OldValue || AttributeData.OldValue == 0)
+		return;
+	float percent = AttributeSet->GetHealth() / AttributeData.OldValue;
+	float newVal = percent * AttributeData.NewValue;
+	AttributeSet->SetHealth(newVal);
+}
+
+void ACTCharacterBase::MaxStaminaChanged(const FOnAttributeChangeData& AttributeData)
+{
+	if (AttributeData.NewValue == AttributeData.OldValue || AttributeData.OldValue == 0)
+		return;
+	float percent = AttributeSet->GetStamina() / AttributeData.OldValue;
+	float newVal = percent * AttributeData.NewValue;
+	AttributeSet->SetStamina(newVal);
+}
+
+void ACTCharacterBase::MaxWalkSpeedChanged(const FOnAttributeChangeData& AttributeData)
+{
+	GetCharacterMovement()->MaxWalkSpeed = AttributeData.NewValue;
+=======
+>>>>>>> 793db664b29283606bd0cf92a0c1d62e4cf0bf93
 }
 
 void ACTCharacterBase::PauseAILogic(const FString& Reason)
@@ -213,7 +266,7 @@ void ACTCharacterBase::StartDeathSequence()
 
 	bIsDead = true;
 	OnCharacterDeathStarted.Broadcast();
-	ApplyEffectToSelf(DeathEffect);
+	ApplyEffectToSelf(DeathEffect, 1);
 	StopAllAbilitites();
 	AbilitySystemComp->SetActive(false);
 	Disable();

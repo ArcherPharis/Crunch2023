@@ -14,6 +14,7 @@
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnAbilityGiven, const FGameplayAbilitySpec*);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterDeath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterDeathStarted);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterTookDamage);
 
 
 UCLASS()
@@ -59,8 +60,9 @@ private:
 
 	//                         - Initialization -                          //
 public:
-	void ApplayInitialEffect();
-	void ApplyRegenEffect();
+	void SetupAttributeChangeDelegate();
+	void ApplyLifetimeEffects();
+	void ApplyInitialEffect();
 	FOnAbilityGiven OnAbilityGiven;
 
 private:
@@ -69,14 +71,22 @@ private:
 	//                         - Gameplay Effects -                        //
 protected:
 	UFUNCTION(BlueprintCallable, Category = "GameplayAbility")
-	void ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply);
+	void ApplyEffectToSelf(const TSubclassOf<class UGameplayEffect>& effectToApply, int level = -1);
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
-	TSubclassOf<class UGameplayEffect> InitialEffect;
+	TArray <TSubclassOf<class UGameplayEffect>> InitialEffects;
 
 	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
-	TArray<TSubclassOf<class UGameplayEffect>> RegenEffects;
+	TArray<TSubclassOf<class UGameplayEffect>> LifeTimeEffects;
+
+
+	UPROPERTY(EditDefaultsOnly, Category = "GameplayAbility")
+	TSubclassOf<UGameplayEffect> levelUpEffect;
+
+	UFUNCTION(BlueprintCallable)
+	void LevelUp();
+
 
 	//                         - Abilitiy montages -                        //
 public:
@@ -132,7 +142,9 @@ protected:
 
 private:
 	void HealthChanged(const FOnAttributeChangeData& AttributeData);
-
+	void MaxHealthChanged(const FOnAttributeChangeData& AttributeData);
+	void MaxStaminaChanged(const FOnAttributeChangeData& AttributeData);
+	void MaxWalkSpeedChanged(const FOnAttributeChangeData& AttributeData);
 
 	/**************************************************************************************/
 	/*                                   Death                                            */
@@ -140,6 +152,7 @@ private:
 public:
 		FOnCharacterDeath OnCharacterDeath;
 		FOnCharacterDeathStarted OnCharacterDeathStarted;
+		FOnCharacterTookDamage OnCharacterTookDamage;
 
 private:
 	void StartDeathSequence();
