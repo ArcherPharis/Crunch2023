@@ -31,6 +31,8 @@ void ACTPlayerController::OnPossess(APawn* InPawn)
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetIntelligenceAttribute()).AddUObject(this, &ACTPlayerController::IntelligenceUpdated);
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetArmorAttribute()).AddUObject(this, &ACTPlayerController::ArmorUpdated);
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetMaxWalkSpeedAttribute()).AddUObject(this, &ACTPlayerController::WalkSpeedUpdated);
+		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetLevelAttribute()).AddUObject(this, &ACTPlayerController::LevelUpdated);
+
 
 
 		Crunch->OnAbilityGiven.AddUObject(this, &ACTPlayerController::PawnAddAbility);
@@ -88,6 +90,11 @@ void ACTPlayerController::WalkSpeedUpdated(const FOnAttributeChangeData& Attribu
 {
 	inGameUI->UpdateWalkSpeed(AttributeData.NewValue);
 
+}
+
+void ACTPlayerController::LevelUpdated(const FOnAttributeChangeData& AttributeData)
+{
+	inGameUI->UpdateLevel(AttributeData.NewValue);
 }
 
 void ACTPlayerController::PawnAddAbility(const FGameplayAbilitySpec* SpecHandle)

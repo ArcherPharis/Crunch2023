@@ -37,7 +37,6 @@ void ARenderActor::PlayReactMontage()
 void ARenderActor::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Begin play"));
 	
 }
 
@@ -45,7 +44,6 @@ void ARenderActor::BeginPlay()
 void ARenderActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("tick"));
 
 
 }

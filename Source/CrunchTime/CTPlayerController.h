@@ -45,6 +45,7 @@ private:
 	void IntelligenceUpdated(const FOnAttributeChangeData& AttributeData);
 	void ArmorUpdated(const FOnAttributeChangeData& AttributeData);
 	void WalkSpeedUpdated(const FOnAttributeChangeData& AttributeData);
+	void LevelUpdated(const FOnAttributeChangeData& AttributeData);
 
 
 	/* - Pawn Ability - */

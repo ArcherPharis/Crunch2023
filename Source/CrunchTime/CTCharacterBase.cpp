@@ -31,7 +31,7 @@ void ACTCharacterBase::SetupAttributeChangeDelegate()
 	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxStaminaAttribute()).AddUObject(this, &ACTCharacterBase::MaxStaminaChanged);
 	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetHealthAttribute()).AddUObject(this, &ACTCharacterBase::HealthChanged);
 	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetMaxWalkSpeedAttribute()).AddUObject(this, &ACTCharacterBase::MaxWalkSpeedChanged);
-
+	AbilitySystemComp->GetGameplayAttributeValueChangeDelegate(AttributeSet->GetExperienceAttribute()).AddUObject(this, &ACTCharacterBase::ExperienceChanged);
 	
 }
 
@@ -144,7 +144,7 @@ void ACTCharacterBase::HealthChanged(const FOnAttributeChangeData& AttributeData
 	{
 		OnCharacterTookDamage.Broadcast();
 	}
-<<<<<<< HEAD
+
 }
 
 void ACTCharacterBase::MaxHealthChanged(const FOnAttributeChangeData& AttributeData)
@@ -168,8 +168,15 @@ void ACTCharacterBase::MaxStaminaChanged(const FOnAttributeChangeData& Attribute
 void ACTCharacterBase::MaxWalkSpeedChanged(const FOnAttributeChangeData& AttributeData)
 {
 	GetCharacterMovement()->MaxWalkSpeed = AttributeData.NewValue;
-=======
->>>>>>> 793db664b29283606bd0cf92a0c1d62e4cf0bf93
+
+}
+
+void ACTCharacterBase::ExperienceChanged(const FOnAttributeChangeData& AttributeData)
+{
+	if (AttributeData.NewValue > AttributeSet->GetNextLevelExperience())
+	{
+		LevelUp();
+	}
 }
 
 void ACTCharacterBase::PauseAILogic(const FString& Reason)
@@ -266,6 +273,7 @@ void ACTCharacterBase::StartDeathSequence()
 
 	bIsDead = true;
 	OnCharacterDeathStarted.Broadcast();
+	AwardEXP();
 	ApplyEffectToSelf(DeathEffect, 1);
 	StopAllAbilitites();
 	AbilitySystemComp->SetActive(false);

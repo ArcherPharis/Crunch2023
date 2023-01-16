@@ -145,6 +145,7 @@ private:
 	void MaxHealthChanged(const FOnAttributeChangeData& AttributeData);
 	void MaxStaminaChanged(const FOnAttributeChangeData& AttributeData);
 	void MaxWalkSpeedChanged(const FOnAttributeChangeData& AttributeData);
+	void ExperienceChanged(const FOnAttributeChangeData& AttributeData);
 
 	/**************************************************************************************/
 	/*                                   Death                                            */
@@ -153,6 +154,9 @@ public:
 		FOnCharacterDeath OnCharacterDeath;
 		FOnCharacterDeathStarted OnCharacterDeathStarted;
 		FOnCharacterTookDamage OnCharacterTookDamage;
+
+		UFUNCTION(BlueprintImplementableEvent, Category = "CharacterBase")
+			void AwardEXP();
 
 private:
 	void StartDeathSequence();

@@ -29,6 +29,9 @@ public:
 	void UpdateStrength(int newVal);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateLevel(int newVal);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void UpdateAttackPower(int newVal);
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void UpdateIntelligence(int newVal);
