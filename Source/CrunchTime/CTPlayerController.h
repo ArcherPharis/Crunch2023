@@ -46,6 +46,9 @@ private:
 	void ArmorUpdated(const FOnAttributeChangeData& AttributeData);
 	void WalkSpeedUpdated(const FOnAttributeChangeData& AttributeData);
 	void LevelUpdated(const FOnAttributeChangeData& AttributeData);
+	void ExperienceUpdated(const FOnAttributeChangeData& AttributeData);
+	void NextLevelExperienceUpdated(const FOnAttributeChangeData& AttributeData);
+
 
 
 	/* - Pawn Ability - */

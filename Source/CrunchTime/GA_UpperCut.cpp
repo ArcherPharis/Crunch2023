@@ -105,7 +105,7 @@ void UGA_UpperCut::ComboHit(FGameplayEventData Payload)
 	ACharacter* avatarAsCharacter = Cast<ACharacter>(avatar);
 	avatarAsCharacter->LaunchCharacter(FVector::UpVector * ComboLaunchSpeed, true, true);
 
-	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(ComboEffect), TargetDataHandle);
+	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(ComboEffect, GetAbilityLevel()), TargetDataHandle);
 	ApplyStunEffectToTarget(TargetDataHandle);
 	for (AActor* target : ComboTargets)
 	{
@@ -128,8 +128,8 @@ void UGA_UpperCut::FinalBlow(FGameplayEventData Payload)
 	ACharacter* avatarAsCharacter = Cast<ACharacter>(avatar);
 	avatarAsCharacter->GetCharacterMovement()->AddImpulse(-avatar->GetActorForwardVector() * FinalBlowPushSpeed, true);
 
-	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(FinalBlowEffect), TargetDataHandle);
-	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(FinalBlowStun), TargetDataHandle);
+	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(FinalBlowEffect, GetAbilityLevel()), TargetDataHandle);
+	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(FinalBlowStun, GetAbilityLevel()), TargetDataHandle);
 
 	for (AActor* target : ComboTargets)
 	{
@@ -152,7 +152,7 @@ void UGA_UpperCut::LaunchTargets(const FGameplayAbilityTargetDataHandle& Data)
 	ACharacter* avatarAsCharacter = Cast<ACharacter>(avatar);
 	avatarAsCharacter->LaunchCharacter(FVector::UpVector * LaunchSpeed, true, true);
 	
-	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(LauchEffect), TargetDataHandle);
+	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(LauchEffect, GetAbilityLevel()), TargetDataHandle);
 	ApplyStunEffectToTarget(TargetDataHandle);
 
 	for (AActor* target : ComboTargets)

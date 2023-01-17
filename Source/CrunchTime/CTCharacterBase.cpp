@@ -81,7 +81,7 @@ void ACTCharacterBase::BeginPlay()
 	LevelUp();
 	ApplyLifetimeEffects();
 	ApplyInitialEffect();
-	GiveAbility(BasicAttackAbility, -1, false);
+	GiveAbility(BasicAttackAbility, -1, false, 1);
 	for (auto& abilityEntry : InitialAbilities)
 	{
 		GiveAbility(abilityEntry.Value, (int)abilityEntry.Key);
@@ -99,6 +99,7 @@ void ACTCharacterBase::LevelUp()
 {
 	float currentLevel = AttributeSet->GetLevel();
 	ApplyEffectToSelf(levelUpEffect, currentLevel + 1);
+	AttributeSet->SetupgradePoint(AttributeSet->GetupgradePoint() + 1);
 }
 
 void ACTCharacterBase::BasicAttack()
@@ -119,10 +120,54 @@ UAbilitySystemComponent* ACTCharacterBase::GetAbilitySystemComponent() const
 	return AbilitySystemComp;
 }
 
-FGameplayAbilitySpec* ACTCharacterBase::GiveAbility(const TSubclassOf<class UGameplayAbility>& newAbility, int inputID, bool broadCast)
+bool ACTCharacterBase::UpgradeAbility(int abilityIndex)
 {
-	FGameplayAbilitySpecHandle specHandle = AbilitySystemComp->GiveAbility(FGameplayAbilitySpec(newAbility, -1, inputID));
 
+	float upgradePoint = AttributeSet->GetupgradePoint();
+	if (upgradePoint < 1)
+	{
+		return false;
+	}
+	TSubclassOf<UGameplayAbility> ability =  GetAbilityByIndex(abilityIndex);
+	FGameplayAbilitySpec* spec = AbilitySystemComp->FindAbilitySpecFromClass(ability); //looks for ability with the same class and stores it as object.
+	//these abilities are already given
+	if (spec && spec->Level < 4)
+	{
+		spec->Level += 1;
+		AttributeSet->SetupgradePoint(upgradePoint - 1);
+		return true;
+	}
+	return false;
+}
+
+void ACTCharacterBase::UpgradeAbilityOne()
+{
+	UpgradeAbility(0);
+}
+
+void ACTCharacterBase::UpgradeAbilityTwo()
+{
+	UpgradeAbility(1);
+}
+
+void ACTCharacterBase::UpgradeAbilityThree()
+{
+	UpgradeAbility(2);
+}
+
+void ACTCharacterBase::UpgradeAbilityFour()
+{
+	UpgradeAbility(3);
+}
+
+void ACTCharacterBase::UpgradeAbilityFive()
+{
+	UpgradeAbility(4);
+}
+
+FGameplayAbilitySpec* ACTCharacterBase::GiveAbility(const TSubclassOf<class UGameplayAbility>& newAbility, int inputID, bool broadCast, int level)
+{
+	FGameplayAbilitySpecHandle specHandle = AbilitySystemComp->GiveAbility(FGameplayAbilitySpec(newAbility, level, inputID));
 	FGameplayAbilitySpec* spec = AbilitySystemComp->FindAbilitySpecFromHandle(specHandle);
 	if (spec && broadCast)
 	{

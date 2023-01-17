@@ -107,9 +107,31 @@ float UCTGameplayAbilityBase::GetStaimiaCost() const
 	return -cost;
 }
 
+int UCTGameplayAbilityBase::GetAssignedLevel(UAbilitySystemComponent* owningComp) const
+{
+
+	int level = 1;
+	if (owningComp)
+	{
+		FGameplayAbilitySpec* spec = owningComp->FindAbilitySpecFromClass(GetClass());
+		level = GetAbilityLevel(spec->Handle, owningComp->AbilityActorInfo.Get());
+	}
+
+	return level;
+}
+
 void UCTGameplayAbilityBase::ApplyStunEffectToTarget(FGameplayAbilityTargetDataHandle TargetData)
 {
 	K2_ApplyGameplayEffectSpecToTarget(MakeOutgoingGameplayEffectSpec(StunEffect), TargetData);
+}
+
+bool UCTGameplayAbilityBase::CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, OUT FGameplayTagContainer* OptionalRelevantTags) const
+{
+	if (GetAbilityLevel(Handle, ActorInfo) < 1)
+	{
+		return false;
+	}
+	return Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags);
 }
 
 bool UCTGameplayAbilityBase::IsOtherHostile(const AActor* otherActor) const

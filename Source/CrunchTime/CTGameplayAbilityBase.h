@@ -28,6 +28,8 @@ protected:
 	TSubclassOf<UGameplayEffect> StunEffect;
 
 	void ApplyStunEffectToTarget(FGameplayAbilityTargetDataHandle TargetData);
+
+	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags = nullptr, const FGameplayTagContainer* TargetTags = nullptr, OUT FGameplayTagContainer* OptionalRelevantTags = nullptr) const override;
 public:
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	bool IsOtherHostile(const AActor* otherActor) const;
@@ -40,6 +42,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	float GetStaimiaCost() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Ability")
+	int GetAssignedLevel(UAbilitySystemComponent* owningComp) const;
 
 private:
 	ACTCharacterBase* AvatarCTCharacterBase;

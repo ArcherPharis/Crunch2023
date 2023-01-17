@@ -33,6 +33,11 @@ void ACTCrunch::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("Zoom", this, &ACTCrunch::Zoom);
 	PlayerInputComponent->BindAction("Jump", IE_Pressed , this, &ACTCrunch::Jump);
 	PlayerInputComponent->BindAction("BasicAttack", IE_Pressed , this, &ACTCrunch::BasicAttack);
+	PlayerInputComponent->BindAction("UpgradeAbilityOne", IE_Pressed, this, &ACTCrunch::UpgradeAbilityOne);
+	PlayerInputComponent->BindAction("UpgradeAbilityTwo", IE_Pressed, this, &ACTCrunch::UpgradeAbilityTwo);
+	PlayerInputComponent->BindAction("UpgradeAbilityThree", IE_Pressed, this, &ACTCrunch::UpgradeAbilityThree);
+	PlayerInputComponent->BindAction("UpgradeAbilityFour", IE_Pressed, this, &ACTCrunch::UpgradeAbilityFour);
+	PlayerInputComponent->BindAction("UpgradeAbilityFive", IE_Pressed, this, &ACTCrunch::UpgradeAbilityFive);
 	GetAbilitySystemComponent()->BindAbilityActivationToInputComponent(PlayerInputComponent, FGameplayAbilityInputBinds(FString("Confirm"), FString("Cancel"), FString("ECTAbilityInputID"), (int32)ECTAbilityInputID::Confirm,(int32)ECTAbilityInputID::Cancel));
 }
 

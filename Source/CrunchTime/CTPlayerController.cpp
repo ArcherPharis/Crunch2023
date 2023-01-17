@@ -32,6 +32,9 @@ void ACTPlayerController::OnPossess(APawn* InPawn)
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetArmorAttribute()).AddUObject(this, &ACTPlayerController::ArmorUpdated);
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetMaxWalkSpeedAttribute()).AddUObject(this, &ACTPlayerController::WalkSpeedUpdated);
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetLevelAttribute()).AddUObject(this, &ACTPlayerController::LevelUpdated);
+		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetExperienceAttribute()).AddUObject(this, &ACTPlayerController::ExperienceUpdated);
+		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetNextLevelExperienceAttribute()).AddUObject(this, &ACTPlayerController::NextLevelExperienceUpdated);
+
 
 
 
@@ -88,8 +91,18 @@ void ACTPlayerController::ArmorUpdated(const FOnAttributeChangeData& AttributeDa
 
 void ACTPlayerController::WalkSpeedUpdated(const FOnAttributeChangeData& AttributeData)
 {
+
 	inGameUI->UpdateWalkSpeed(AttributeData.NewValue);
 
+}
+
+void ACTPlayerController::ExperienceUpdated(const FOnAttributeChangeData& AttributeData)
+{
+	inGameUI->UpdateExperience(AttributeData.NewValue);
+}
+void ACTPlayerController::NextLevelExperienceUpdated(const FOnAttributeChangeData& AttributeData)
+{
+	inGameUI->UpdateNextLevelExperience(AttributeData.NewValue);
 }
 
 void ACTPlayerController::LevelUpdated(const FOnAttributeChangeData& AttributeData)

@@ -32,6 +32,12 @@ public:
 	void UpdateLevel(int newVal);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateExperience(int newVal);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateNextLevelExperience(int newVal);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void UpdateAttackPower(int newVal);
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void UpdateIntelligence(int newVal);

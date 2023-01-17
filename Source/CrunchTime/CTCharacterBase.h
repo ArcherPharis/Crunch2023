@@ -48,6 +48,16 @@ public:
 	TSubclassOf<UGameplayAbility> GetAbilityByIndex(int index) const;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const;
 	FORCEINLINE class UCTAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+protected:
+	bool UpgradeAbility(int abilityIndex);
+	void UpgradeAbilityOne();
+	void UpgradeAbilityTwo();
+	void UpgradeAbilityThree();
+	void UpgradeAbilityFour();
+	void UpgradeAbilityFive();
+
+
 private:
 	UPROPERTY()
 	class UCTAbilitySystemComponent* AbilitySystemComp;
@@ -66,7 +76,7 @@ public:
 	FOnAbilityGiven OnAbilityGiven;
 
 private:
-	FGameplayAbilitySpec* GiveAbility(const TSubclassOf<class UGameplayAbility>& newAbility, int inputID = -1, bool broadCast = true);
+	FGameplayAbilitySpec* GiveAbility(const TSubclassOf<class UGameplayAbility>& newAbility, int inputID = -1, bool broadCast = true, int level = 0);
 
 	//                         - Gameplay Effects -                        //
 protected:
