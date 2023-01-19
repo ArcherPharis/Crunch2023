@@ -23,6 +23,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "UI")
 	FORCEINLINE class UInGameUI* GetInGameUI() const { return inGameUI; }
 
+	void UpdateAbilityIcon(UGameplayAbility* Ability);
+	void LevelUpUI();
+
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<class UInGameUI> InGameUIClass;

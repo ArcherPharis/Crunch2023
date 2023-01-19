@@ -146,6 +146,16 @@ void ACTPlayerController::PawnTookDamage()
 	inGameUI->HeadshotDamageReact();
 }
 
+void ACTPlayerController::UpdateAbilityIcon(UGameplayAbility* Ability)
+{
+	inGameUI->UpdateAbility(Ability);
+}
+
+void ACTPlayerController::LevelUpUI()
+{
+	inGameUI->LevelUpUI();
+}
+
 void ACTPlayerController::TogglePause()
 {
 	if (bIsPawnDead)

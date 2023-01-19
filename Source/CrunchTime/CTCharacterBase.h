@@ -25,6 +25,9 @@ public:
 	ACTCharacterBase();
 	virtual void PossessedBy(AController* NewController) override;
 	virtual void BeginPlay() override;
+
+private:
+	class ACTPlayerController* cont;
 	
 	/**************************************************************************************/
 	/*                                       TEAM                                         */

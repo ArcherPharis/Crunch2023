@@ -22,6 +22,10 @@ class CRUNCHTIME_API UCTAttributeSet : public UAttributeSet
 	GENERATED_BODY()
 	
 public:
+
+	UFUNCTION(BlueprintPure)
+	float GetUpgradePoints() const;
+
 	UPROPERTY()
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UCTAttributeSet, Health);

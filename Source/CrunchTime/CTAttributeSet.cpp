@@ -29,3 +29,9 @@ void UCTAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 		SetStamina(FMath::Clamp(GetStamina(), 0, GetMaxStamina()));
 	}
 }
+
+float UCTAttributeSet::GetUpgradePoints() const
+{
+	return GetupgradePoint();
+}
+

@@ -20,6 +20,13 @@ public:
 	FOnResumeBtnClicked OnResumeBtnClicked;
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateAbility(UGameplayAbility* Ability);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void LevelUpUI();
+
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void UpdateHealth(float newHealth, float MaxHealth);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")

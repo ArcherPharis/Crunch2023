@@ -101,7 +101,7 @@ float UCTGameplayAbilityBase::GetStaimiaCost() const
 	{
 		if (modifierInfo.Attribute == UCTAttributeSet::GetStaminaAttribute())
 		{
-			modifierInfo.ModifierMagnitude.GetStaticMagnitudeIfPossible(-1, cost);
+			modifierInfo.ModifierMagnitude.GetStaticMagnitudeIfPossible(GetAbilityLevel(), cost);
 		}
 	}
 	return -cost;

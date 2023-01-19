@@ -5,6 +5,8 @@
 #include "CTAbilitySystemComponent.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "CTAttributeSet.h"
+#include "CTPlayerController.h"
+#include "Kismet/GameplayStatics.h"
 #include "HitDetectionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "AIController.h"
@@ -76,7 +78,7 @@ void ACTCharacterBase::SetEanbleAiming(bool bEnableMoving)
 void ACTCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	cont = Cast<ACTPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
 	SetupAttributeChangeDelegate();
 	LevelUp();
 	ApplyLifetimeEffects();
@@ -100,6 +102,7 @@ void ACTCharacterBase::LevelUp()
 	float currentLevel = AttributeSet->GetLevel();
 	ApplyEffectToSelf(levelUpEffect, currentLevel + 1);
 	AttributeSet->SetupgradePoint(AttributeSet->GetupgradePoint() + 1);
+	cont->LevelUpUI();
 }
 
 void ACTCharacterBase::BasicAttack()
@@ -135,6 +138,7 @@ bool ACTCharacterBase::UpgradeAbility(int abilityIndex)
 	{
 		spec->Level += 1;
 		AttributeSet->SetupgradePoint(upgradePoint - 1);
+		cont->UpdateAbilityIcon(spec->Ability);
 		return true;
 	}
 	return false;
