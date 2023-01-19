@@ -31,7 +31,10 @@ private:
 	TSubclassOf<class UInGameUI> InGameUIClass;
 	UInGameUI* inGameUI;
 	UFUNCTION()
-	void TogglePause();
+	void TogglePauseMenu();
+	void ToggleShop();
+
+	void SetPaused(bool bPaused);
 
 	/**************************************************************************************/
 	/*                                        Pawn                                        */

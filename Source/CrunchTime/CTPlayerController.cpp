@@ -17,7 +17,7 @@ void ACTPlayerController::OnPossess(APawn* InPawn)
 	if (InGameUIClass)
 	{
 		inGameUI = CreateWidget<UInGameUI>(this, InGameUIClass);
-		inGameUI->OnResumeBtnClicked.AddDynamic(this, &ACTPlayerController::TogglePause);
+		inGameUI->OnResumeBtnClicked.AddDynamic(this, &ACTPlayerController::TogglePauseMenu);
 		inGameUI->AddToViewport();
 	}
 
@@ -51,8 +51,11 @@ void ACTPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 	if (InputComponent)
 	{
-		FInputActionBinding& PauseInputBinding = InputComponent->BindAction("TogglePause", IE_Pressed, this, &ACTPlayerController::TogglePause);
+		FInputActionBinding& PauseInputBinding = InputComponent->BindAction("TogglePause", IE_Pressed, this, &ACTPlayerController::TogglePauseMenu);
 		PauseInputBinding.bExecuteWhenPaused = true;
+
+		FInputActionBinding& ShopInputBinding = InputComponent->BindAction("Shop", IE_Pressed, this, &ACTPlayerController::ToggleShop);
+		ShopInputBinding.bExecuteWhenPaused = true;
 	}
 }
 
@@ -156,26 +159,56 @@ void ACTPlayerController::LevelUpUI()
 	inGameUI->LevelUpUI();
 }
 
-void ACTPlayerController::TogglePause()
+void ACTPlayerController::TogglePauseMenu()
 {
 	if (bIsPawnDead)
 	{
 		return;
 	}
 
-	if (UGameplayStatics::IsGamePaused(this))
+	if (IsPaused())
 	{
-		UGameplayStatics::SetGamePaused(this, false);
+		SetPause(false);
 		inGameUI->SwitchToGameplayUI();
-
-		SetShowMouseCursor(false);
-		SetInputMode(FInputModeGameOnly());
 	}
 	else
 	{
-		UGameplayStatics::SetGamePaused(this, true);
+		SetPause(true);
 		inGameUI->SwitchToPauseUI();
+	}
+}
+
+void ACTPlayerController::ToggleShop()
+{
+	if (bIsPawnDead)
+	{
+		return;
+	}
+
+	if (IsPaused())
+	{
+		SetPaused(false);
+		inGameUI->SwitchToGameplayUI();
+	}
+	else
+	{
+		SetPaused(true);
+		inGameUI->SwitchToShopUI();
+	}
+}
+
+
+void ACTPlayerController::SetPaused(bool bPaused)
+{
+	UGameplayStatics::SetGamePaused(this, bPaused);
+	if (bPaused)
+	{
 		SetInputMode(FInputModeGameAndUI());
 		SetShowMouseCursor(true);
+	}
+	else
+	{
+		SetShowMouseCursor(false);
+		SetInputMode(FInputModeGameOnly());
 	}
 }

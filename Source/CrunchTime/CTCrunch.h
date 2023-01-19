@@ -49,4 +49,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float zoomAmt = 10.f;
 
+protected:
+	UFUNCTION(BlueprintCallable, Category = "PlayerDebug")
+	void TestLoadShopAssets();
+
 };

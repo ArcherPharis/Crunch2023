@@ -67,6 +67,8 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void SwitchToGameplayUI();
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void SwitchToShopUI();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void SwitchToDeathUI();

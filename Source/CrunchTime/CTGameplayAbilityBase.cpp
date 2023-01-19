@@ -88,7 +88,7 @@ float UCTGameplayAbilityBase::GetCooldownDuration() const
 	return duration;
 }
 
-float UCTGameplayAbilityBase::GetStaimiaCost() const
+float UCTGameplayAbilityBase::GetStaimiaCost(int level) const
 {
 	if (!GetCostGameplayEffect())
 	{
@@ -101,7 +101,7 @@ float UCTGameplayAbilityBase::GetStaimiaCost() const
 	{
 		if (modifierInfo.Attribute == UCTAttributeSet::GetStaminaAttribute())
 		{
-			modifierInfo.ModifierMagnitude.GetStaticMagnitudeIfPossible(GetAbilityLevel(), cost);
+			modifierInfo.ModifierMagnitude.GetStaticMagnitudeIfPossible(level, cost);
 		}
 	}
 	return -cost;

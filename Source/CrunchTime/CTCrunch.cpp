@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "AbilitySystemComponent.h"
+#include "Shop.h"
 
 ACTCrunch::ACTCrunch()
 {
@@ -64,4 +65,9 @@ void ACTCrunch::Turn(float amt)
 void ACTCrunch::Zoom(float amt)
 {
 	CameraBoom->TargetArmLength = FMath::Clamp(CameraBoom->TargetArmLength - amt * zoomAmt, ZoomRange.X, ZoomRange.Y);
+}
+
+void ACTCrunch::TestLoadShopAssets()
+{
+	UShop::GetShop()->ASyncLoadShopItems();
 }

@@ -41,7 +41,7 @@ public:
 	float GetCooldownDuration() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Ability")
-	float GetStaimiaCost() const;
+	float GetStaimiaCost(int level) const;
 
 	UFUNCTION(BlueprintCallable, Category = "Ability")
 	int GetAssignedLevel(UAbilitySystemComponent* owningComp) const;
