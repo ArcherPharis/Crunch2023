@@ -18,6 +18,9 @@ class CRUNCHTIME_API UItem : public UPrimaryDataAsset
 
 public:
 	FORCEINLINE UTexture2D* GetIconTexture() const { return iconTexture; }
+	FORCEINLINE FText GetDescription() const { return description; }
+	FORCEINLINE FText GetItemName() const { return name; }
+	FORCEINLINE TSubclassOf<class UItemToolTip> GetToolTipClass() const { return toolTipClass; }
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
@@ -30,6 +33,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
 	UTexture2D* iconTexture;
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
+	FText name;
+	UPROPERTY(EditDefaultsOnly, Category = "Item")
 	FText description;
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
 	TSubclassOf<UGameplayEffect> EquipPassiveEffect;
@@ -39,6 +44,8 @@ private:
 	bool isStackable;
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
 	bool isConsumable;
+	UPROPERTY(EditDefaultsOnly, Category = "Item")
+	TSubclassOf<UItemToolTip> toolTipClass;
 
 	int stack = 1;
 	
