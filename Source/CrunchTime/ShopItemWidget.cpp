@@ -2,11 +2,24 @@
 
 
 #include "ShopItemWidget.h"
+#include "Shop.h"
 #include "Item.h"
 
 void UShopItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
-	TSubclassOf<UItem> itemClass(Cast<UClass>(ListItemObject));
+	itemClass = (Cast<UClass>(ListItemObject));
 	InitFromItemClass(itemClass);
+	bIsFocusable = true;
+}
+
+void UShopItemWidget::LeftClicked()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Left Button Dragged"));
+}
+
+void UShopItemWidget::RightClicked()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Right Button Clicked"));
+	UShop::GetShop()->ProcessPurchaseEvent(itemClass.GetDefaultObject(), GetOwningPlayerPawn());
 }
 

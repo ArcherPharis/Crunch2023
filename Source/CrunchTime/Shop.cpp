@@ -3,6 +3,7 @@
 
 #include "Shop.h"
 #include "CTAssetManager.h"
+#include "InventoryComponent.h"
 #include "Item.h"
 
 UShop* UShop::GetShop()
@@ -29,4 +30,10 @@ void UShop::AssetLoaded(const FPrimaryAssetId assetID)
 	UCTAssetManager& assetManager = UCTAssetManager::Get();
 	TSubclassOf<UItem> itemClass =  assetManager.GetPrimaryAssetObjectClass<UItem>(assetID);
 	onItemLoaded.Broadcast(itemClass);
+}
+
+void UShop::ProcessPurchaseEvent(const UItem* itemToPurchase, AActor* Purchaser)
+{
+	UInventoryComponent* inventoryComp = Cast<UInventoryComponent>(Purchaser->GetComponentByClass(UInventoryComponent::StaticClass()));
+	inventoryComp->TryPurchase(itemToPurchase);
 }

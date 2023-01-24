@@ -17,6 +17,7 @@ class CRUNCHTIME_API UItemWidgetBase : public UUserWidget
 
 public:
 	void InitFromItemClass(TSubclassOf<UItem> itemClass);
+	void InitFromItem(const UItem* item);
 
 private:
 	UPROPERTY(meta = (BindWidget))
@@ -24,6 +25,13 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	FName IconTexturePropertyName;
 
-	TSubclassOf<UItem> item;
+protected:
+
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	virtual void LeftClicked();
+	virtual void RightClicked();
+
 	
 };

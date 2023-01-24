@@ -216,4 +216,12 @@ private:
 	void DisableAIRelavency();
 	UPROPERTY()
 	class UAIPerceptionStimuliSourceComponent* PerceptionStimuliComp;
+
+	/**************************************************************************************/
+/*                                       Inventory                                           */
+/**************************************************************************************/
+
+private:
+	UPROPERTY(EditDefaultsOnly)
+	class UInventoryComponent* inventoryComponenet;
 };

@@ -15,6 +15,11 @@ void UCTAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, fl
 	{
 		NewValue = FMath::Clamp(NewValue, 0, GetMaxStamina());
 	}
+
+	if (Attribute == GetcreditAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0, TNumericLimits<float>::Max());
+	}
 }
 
 void UCTAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -27,6 +32,11 @@ void UCTAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallback
 	if (Data.EvaluatedData.Attribute == GetStaminaAttribute())
 	{
 		SetStamina(FMath::Clamp(GetStamina(), 0, GetMaxStamina()));
+	}
+
+	if (Data.EvaluatedData.Attribute == GetcreditAttribute())
+	{
+		Setcredit(FMath::Clamp(Getcredit(), 0, TNumericLimits<float>::Max()));
 	}
 }
 

@@ -21,6 +21,9 @@ public:
 	FORCEINLINE FText GetDescription() const { return description; }
 	FORCEINLINE FText GetItemName() const { return name; }
 	FORCEINLINE TSubclassOf<class UItemToolTip> GetToolTipClass() const { return toolTipClass; }
+	FORCEINLINE float GetPrice() const { return price; }
+	FORCEINLINE TSubclassOf<UGameplayEffect> GetPassiveGameplayEffect() const { return EquipPassiveEffect; }
+
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
@@ -47,6 +50,5 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
 	TSubclassOf<UItemToolTip> toolTipClass;
 
-	int stack = 1;
 	
 };

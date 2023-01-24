@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "HitDetectionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "InventoryComponent.h"
 #include "AIController.h"
 #include "BrainComponent.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
@@ -25,6 +26,7 @@ ACTCharacterBase::ACTCharacterBase()
 	HitDetectionComp->SetupAttachment(GetMesh());
 
 	PerceptionStimuliComp = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>("PerceptionStimuliComp");
+	inventoryComponenet = CreateDefaultSubobject<UInventoryComponent>(TEXT("InventoryComp"));
 }
 
 void ACTCharacterBase::SetupAttributeChangeDelegate()

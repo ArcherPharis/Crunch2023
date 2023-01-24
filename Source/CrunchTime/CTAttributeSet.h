@@ -75,6 +75,10 @@ public:
 	FGameplayAttributeData upgradePoint;
 	ATTRIBUTE_ACCESSORS(UCTAttributeSet, upgradePoint);
 
+	UPROPERTY()
+	FGameplayAttributeData credit;
+	ATTRIBUTE_ACCESSORS(UCTAttributeSet, credit);
+
 private:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data);

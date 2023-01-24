@@ -25,5 +25,6 @@ public:
 
 	void ASyncLoadShopItems();
 	void AssetLoaded(const FPrimaryAssetId assetID);
+	void ProcessPurchaseEvent(const UItem* itemToPurchase, AActor* Purchaser);
 	
 };

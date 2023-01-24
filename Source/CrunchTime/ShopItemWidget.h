@@ -17,5 +17,11 @@ class CRUNCHTIME_API UShopItemWidget : public UItemWidgetBase, public IUserObjec
 
 private:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+
+	virtual void LeftClicked() override;
+	virtual void RightClicked() override;
+
+	TSubclassOf<UItem> itemClass;
+
 	
 };
