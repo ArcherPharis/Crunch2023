@@ -18,6 +18,20 @@ UInventoryComponent::UInventoryComponent()
 }
 
 
+void UInventoryComponent::ItemActivated(int itemHandle)
+{
+	FInventoryItemSpec* spec = ItemContainer.Find(itemHandle);
+	if (spec)
+	{
+		ApplyItemActiveEffect(spec->GetItem());
+		if (spec->IsConsumable() && !spec->PopStack())
+		{
+			onItemChanged.Broadcast(spec, false);
+			ItemContainer.Remove(itemHandle);
+		}
+	}
+}
+
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
 {
@@ -38,10 +52,21 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 
 void UInventoryComponent::GiveItem(const UItem* itemCDO)
 {
+
+	//adding onto a stack of item that can stack, make sure its a reference
+	for (auto& pair : ItemContainer)
+	{
+		if (pair.Value.GetItem() == itemCDO && pair.Value.IsStackable())
+		{
+			pair.Value.PushStack();
+			return;
+		}
+	}
+
+	//adding a new one
 	FActiveGameplayEffectHandle handle = ApplyItemPassiveEffect(itemCDO);
 	FInventoryItemSpec newItemSpec = FInventoryItemSpec(itemCDO, handle);
-	int newItemIndex = ItemContainer.Add(newItemSpec);
-	onItemChanged.Broadcast(&ItemContainer[newItemIndex], true);
+	onItemChanged.Broadcast(&ItemContainer.Add(newItemSpec.GetHandle(), newItemSpec), true);
 	//& made it into a address, hence a pointer!
 }
 
@@ -56,6 +81,12 @@ FActiveGameplayEffectHandle UInventoryComponent::ApplyItemPassiveEffect(const UI
 {
 	TSubclassOf<UGameplayEffect> passiveEffect =  itemCDO->GetPassiveGameplayEffect();
 	return ApplyGameplayEffectToOwner(passiveEffect);
+}
+
+FActiveGameplayEffectHandle UInventoryComponent::ApplyItemActiveEffect(const UItem* itemCDO) const
+{
+	TSubclassOf<UGameplayEffect> activeEffect = itemCDO->GetActiveGameplayEffect();
+	return ApplyGameplayEffectToOwner(activeEffect);
 }
 
 bool UInventoryComponent::HasCreditFor(const UItem* item) const

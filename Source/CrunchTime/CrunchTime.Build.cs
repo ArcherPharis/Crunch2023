@@ -10,7 +10,7 @@ public class CrunchTime : ModuleRules
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities", "GameplayTags", "GameplayTasks" , "AIModule", "SlateCore"});
+		PrivateDependencyModuleNames.AddRange(new string[] { "GameplayAbilities", "GameplayTags", "GameplayTasks" , "AIModule", "SlateCore", "Slate"});
 
 		// Uncomment if you are using Slate UI
 		//PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

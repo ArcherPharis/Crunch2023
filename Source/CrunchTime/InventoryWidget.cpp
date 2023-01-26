@@ -24,11 +24,20 @@ void UInventoryWidget::ItemChanged(FInventoryItemSpec* spec, bool bWasAdded)
 			if (slot->IsEmpty())
 			{
 				slot->AssignItem(spec);
-				UE_LOG(LogTemp, Warning, TEXT("%s"), *slot->GetName());
 				break;
 			}
 		}
 		
+	}
+	else
+	{
+		for (auto slot : Slots)
+		{
+			if (slot->IsForItem(spec->GetHandle()))
+			{
+				slot->EmptySlot();
+			}
+		}
 	}
 	
 }
@@ -42,8 +51,10 @@ void UInventoryWidget::BuildGrid()
 	for (int i = 0; i < capacity; ++i)
 	{
 		UItemInventoryItemSlotWidget* newSlot = CreateWidget<UItemInventoryItemSlotWidget>(SlotWrapBox, SlotClass);
+		newSlot->onItemActivated.AddUObject(OwningInventoryComp, &UInventoryComponent::ItemActivated);
+		newSlot->bIsFocusable = true;
 		Slots.Add(newSlot);
-		SlotWrapBox->AddChildToWrapBox(CreateWidget(SlotWrapBox, SlotClass));
+		SlotWrapBox->AddChildToWrapBox(newSlot);
 
 	}
 }

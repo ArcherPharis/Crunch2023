@@ -23,6 +23,9 @@ public:
 	FORCEINLINE TSubclassOf<class UItemToolTip> GetToolTipClass() const { return toolTipClass; }
 	FORCEINLINE float GetPrice() const { return price; }
 	FORCEINLINE TSubclassOf<UGameplayEffect> GetPassiveGameplayEffect() const { return EquipPassiveEffect; }
+	FORCEINLINE TSubclassOf<UGameplayEffect> GetActiveGameplayEffect() const { return ActivationEffect; }
+	FORCEINLINE bool IsStackable() const { return isStackable; }
+	FORCEINLINE bool IsConsumable() const { return isConsumable; }
 
 
 private:

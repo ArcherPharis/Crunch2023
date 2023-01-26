@@ -26,6 +26,8 @@ public:
 
 	FORCEINLINE int GetCapacity() const { return capacity; }
 
+	void ItemActivated(int itemHandle);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -43,6 +45,8 @@ private:
 
 	FActiveGameplayEffectHandle ApplyItemPassiveEffect(const UItem* itemCDO) const;
 
+	FActiveGameplayEffectHandle ApplyItemActiveEffect(const UItem* itemCDO) const;
+
 	UPROPERTY()
 	class UAbilitySystemComponent* OwnerAbilitySystemComp;
 
@@ -51,8 +55,9 @@ private:
 
 	bool isFull() const;
 
+	//int is the handle
 	UPROPERTY()
-	TArray<FInventoryItemSpec> ItemContainer;
+	TMap<int, FInventoryItemSpec> ItemContainer;
 
 	FActiveGameplayEffectHandle ApplyGameplayEffectToOwner(TSubclassOf<class UGameplayEffect> effectToApply) const;
 

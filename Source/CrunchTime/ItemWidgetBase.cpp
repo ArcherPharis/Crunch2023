@@ -11,18 +11,20 @@ void UItemWidgetBase::InitFromItemClass(TSubclassOf<UItem> itemClass)
 {
 	UItem* itemCDO = itemClass.GetDefaultObject();
 	UItemToolTip* tt = CreateWidget<UItemToolTip>(this, itemCDO->GetToolTipClass());
-	Icon->GetDynamicMaterial()->SetTextureParameterValue(IconTexturePropertyName, itemCDO->GetIconTexture());
+	ItemIcon->GetDynamicMaterial()->SetTextureParameterValue(IconTexturePropertyName, itemCDO->GetIconTexture());
 	tt->SetParameters(itemCDO->GetItemName(), itemCDO->GetDescription(), itemCDO->GetIconTexture());
-	Icon->SetToolTip(tt);
+	ItemIcon->SetToolTip(tt);
 	
 }
 
 void UItemWidgetBase::InitFromItem(const UItem* item)
 {
+	UTexture* iconTexture = item->GetIconTexture();
+	UE_LOG(LogTemp, Warning, TEXT("Item has texture: %s, will be assigend to: %s"), *iconTexture->GetName(), *IconTexturePropertyName.ToString())
 	UItemToolTip* tt = CreateWidget<UItemToolTip>(this, item->GetToolTipClass());
-	Icon->GetDynamicMaterial()->SetTextureParameterValue(IconTexturePropertyName, item->GetIconTexture());
+	SetIconTexture(item->GetIconTexture());
 	tt->SetParameters(item->GetItemName(), item->GetDescription(), item->GetIconTexture());
-	Icon->SetToolTip(tt);
+	ItemIcon->SetToolTip(tt);
 	UE_LOG(LogTemp, Warning, TEXT("Reaching here: %s"), *item->GetName());
 }
 
@@ -57,6 +59,13 @@ FReply UItemWidgetBase::NativeOnMouseButtonUp(const FGeometry& InGeometry, const
 		}
 	}
 	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
+}
+
+void UItemWidgetBase::SetIconTexture(UTexture2D* texture)
+{
+
+	GetIcon()->GetDynamicMaterial()->SetTextureParameterValue(IconTexturePropertyName, texture);
+
 }
 
 void UItemWidgetBase::RightClicked()

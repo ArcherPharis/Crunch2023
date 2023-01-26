@@ -11,6 +11,8 @@
  */
 class UItem;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStackChanged, int, newStackCount);
+
 USTRUCT(BlueprintType)
 struct CRUNCHTIME_API FInventoryItemSpec
 {
@@ -27,9 +29,22 @@ public:
 
 	FORCEINLINE const UItem* GetItem() const { return ItemCDO; }
 
+	bool IsStackable() const;
+	bool IsConsumable() const;
+	void PushStack();
+	bool PopStack();
+
+	FORCEINLINE bool IsValid() const { return handle != INDEX_NONE; }
+	FORCEINLINE int GetHandle() const { return handle; }
+
+	FOnStackChanged onStackChanged;
+
 private:
 	const UItem* ItemCDO;
 	TArray <FActiveGameplayEffectHandle> PassiveEffectHandle;
 	int stackCount = 1;
+	int handle;
+
+	int CreateNewHandle() const;
 
 };
