@@ -3,6 +3,7 @@
 
 #include "ItemInventoryItemSlotWidget.h"
 #include "InventoryItemSpec.h"
+#include "Components/Image.h"
 
 void UItemInventoryItemSlotWidget::AssignItem(FInventoryItemSpec* spec)
 {
@@ -13,4 +14,9 @@ void UItemInventoryItemSlotWidget::AssignItem(FInventoryItemSpec* spec)
 bool UItemInventoryItemSlotWidget::IsEmpty() const
 {
 	return bisEmpty;
+}
+
+void UItemInventoryItemSlotWidget::ChangeColor()
+{
+
 }

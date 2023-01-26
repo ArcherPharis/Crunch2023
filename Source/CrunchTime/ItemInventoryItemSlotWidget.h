@@ -18,6 +18,8 @@ public:
 
 	bool IsEmpty() const;
 
+	void ChangeColor();
+
 private:
 	bool bisEmpty = true;
 	

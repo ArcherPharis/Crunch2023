@@ -23,6 +23,7 @@ void UItemWidgetBase::InitFromItem(const UItem* item)
 	Icon->GetDynamicMaterial()->SetTextureParameterValue(IconTexturePropertyName, item->GetIconTexture());
 	tt->SetParameters(item->GetItemName(), item->GetDescription(), item->GetIconTexture());
 	Icon->SetToolTip(tt);
+	UE_LOG(LogTemp, Warning, TEXT("Reaching here: %s"), *item->GetName());
 }
 
 FReply UItemWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)

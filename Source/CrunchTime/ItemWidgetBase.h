@@ -18,6 +18,7 @@ class CRUNCHTIME_API UItemWidgetBase : public UUserWidget
 public:
 	void InitFromItemClass(TSubclassOf<UItem> itemClass);
 	void InitFromItem(const UItem* item);
+	class UImage* GetIcon() const { return Icon; }
 
 private:
 	UPROPERTY(meta = (BindWidget))

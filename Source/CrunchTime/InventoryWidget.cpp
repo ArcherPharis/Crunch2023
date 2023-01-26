@@ -24,9 +24,11 @@ void UInventoryWidget::ItemChanged(FInventoryItemSpec* spec, bool bWasAdded)
 			if (slot->IsEmpty())
 			{
 				slot->AssignItem(spec);
+				UE_LOG(LogTemp, Warning, TEXT("%s"), *slot->GetName());
 				break;
 			}
 		}
+		
 	}
 	
 }
