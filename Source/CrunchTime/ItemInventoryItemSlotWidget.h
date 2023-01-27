@@ -7,6 +7,7 @@
 #include "ItemInventoryItemSlotWidget.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnItemActivated, int);
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnItemSelled, int);
 
 /**
  * 
@@ -26,6 +27,7 @@ public:
 	bool IsForItem(int handle);
 
 	FOnItemActivated onItemActivated;
+	FOnItemSelled onItemSold;
 
 private:
 	bool bisEmpty = true;
@@ -37,12 +39,25 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Item")
 	UTexture2D* EmptyTexture;
 
+	UPROPERTY(EditDefaultsOnly, Category = "InvnentoryItemSlot")
+	TSubclassOf<class UInventorySlotMenuWidget> RightMenuWidgetClass;
+	void SpawnRightClickMenu();
+	class UInventorySlotMenuWidget* RightMenuWidget;
+
+	void HideRightMenu();
+	void ShowRightMenu();
+
 	
 
 	UFUNCTION()
 	void StackChanged(int newStackCount);
+	UFUNCTION()
+	void SellItem();
+	UFUNCTION()
+	void UseItem();
 
 	virtual void LeftClicked() override;
+	virtual void RightClicked() override;
 
 	int ItemSpecHandle = INDEX_NONE;
 	

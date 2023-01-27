@@ -54,6 +54,7 @@ private:
 	void LevelUpdated(const FOnAttributeChangeData& AttributeData);
 	void ExperienceUpdated(const FOnAttributeChangeData& AttributeData);
 	void NextLevelExperienceUpdated(const FOnAttributeChangeData& AttributeData);
+	void CreditsUpdated(const FOnAttributeChangeData& AttributeData);
 
 
 

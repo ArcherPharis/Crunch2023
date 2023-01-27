@@ -27,6 +27,7 @@ public:
 	FORCEINLINE int GetCapacity() const { return capacity; }
 
 	void ItemActivated(int itemHandle);
+	void ItemSold(int itemHandle);
 
 protected:
 	// Called when the game starts

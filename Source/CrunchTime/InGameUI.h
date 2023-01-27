@@ -25,6 +25,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void LevelUpUI();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void UpdateCredits(int newVal);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void UpdateHealth(float newHealth, float MaxHealth);

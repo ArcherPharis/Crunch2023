@@ -52,6 +52,7 @@ void UInventoryWidget::BuildGrid()
 	{
 		UItemInventoryItemSlotWidget* newSlot = CreateWidget<UItemInventoryItemSlotWidget>(SlotWrapBox, SlotClass);
 		newSlot->onItemActivated.AddUObject(OwningInventoryComp, &UInventoryComponent::ItemActivated);
+		newSlot->onItemSold.AddUObject(OwningInventoryComp, &UInventoryComponent::ItemSold);
 		newSlot->bIsFocusable = true;
 		Slots.Add(newSlot);
 		SlotWrapBox->AddChildToWrapBox(newSlot);

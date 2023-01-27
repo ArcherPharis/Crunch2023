@@ -32,6 +32,24 @@ void UInventoryComponent::ItemActivated(int itemHandle)
 	}
 }
 
+void UInventoryComponent::ItemSold(int itemHandle)
+{
+	FInventoryItemSpec* spec = ItemContainer.Find(itemHandle);
+	if (spec)
+	{
+		float price = spec->GetItem()->GetPrice();
+		bool found;
+		float avaliableCredit = OwnerAbilitySystemComp->GetGameplayAttributeValue(UCTAttributeSet::GetcreditAttribute(), found);
+		OwnerAbilitySystemComp->SetNumericAttributeBase(UCTAttributeSet::GetcreditAttribute(), avaliableCredit + price/2);
+		if (spec->IsConsumable() && !spec->PopStack())
+		{
+			onItemChanged.Broadcast(spec, false);
+			ItemContainer.Remove(itemHandle);
+		}
+	}
+
+}
+
 // Called when the game starts
 void UInventoryComponent::BeginPlay()
 {

@@ -34,7 +34,7 @@ void ACTPlayerController::OnPossess(APawn* InPawn)
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetLevelAttribute()).AddUObject(this, &ACTPlayerController::LevelUpdated);
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetExperienceAttribute()).AddUObject(this, &ACTPlayerController::ExperienceUpdated);
 		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetNextLevelExperienceAttribute()).AddUObject(this, &ACTPlayerController::NextLevelExperienceUpdated);
-
+		Crunch->GetAbilitySystemComponent()->GetGameplayAttributeValueChangeDelegate(Crunch->GetAttributeSet()->GetcreditAttribute()).AddUObject(this, &ACTPlayerController::CreditsUpdated);
 
 
 
@@ -106,6 +106,11 @@ void ACTPlayerController::ExperienceUpdated(const FOnAttributeChangeData& Attrib
 void ACTPlayerController::NextLevelExperienceUpdated(const FOnAttributeChangeData& AttributeData)
 {
 	inGameUI->UpdateNextLevelExperience(AttributeData.NewValue);
+}
+
+void ACTPlayerController::CreditsUpdated(const FOnAttributeChangeData& AttributeData)
+{
+	inGameUI->UpdateCredits(AttributeData.NewValue);
 }
 
 void ACTPlayerController::LevelUpdated(const FOnAttributeChangeData& AttributeData)
