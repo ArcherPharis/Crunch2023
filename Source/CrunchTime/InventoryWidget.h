@@ -28,8 +28,13 @@ private:
 
 	void BuildGrid();
 
+	
+
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory")
 	TSubclassOf<class UItemInventoryItemSlotWidget> SlotClass;
+
+
+	void SwapItems(UItemInventoryItemSlotWidget* itemA, UItemInventoryItemSlotWidget* itemB);
 
 	UPROPERTY()
 	TArray<UItemInventoryItemSlotWidget*> Slots;

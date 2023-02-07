@@ -18,11 +18,12 @@ class CRUNCHTIME_API UItemWidgetBase : public UUserWidget
 public:
 	void InitFromItemClass(TSubclassOf<UItem> itemClass);
 	void InitFromItem(const UItem* item);
+	void InitFromOther(UItemWidgetBase* otherWidget);
 	UFUNCTION(BlueprintCallable)
 	class UImage* GetIcon() const { return ItemIcon; }
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void SetIconTexture(UTexture* texture);
+	//UFUNCTION(BlueprintImplementableEvent)
+	//void SetIconTexture(UTexture* texture);
 
 private:
 
@@ -35,7 +36,7 @@ protected:
 
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
-	void SetIconTexture(UTexture2D* texture);
+	void SetIconTexture(UTexture* texture);
 	virtual void LeftClicked();
 	virtual void RightClicked();
 

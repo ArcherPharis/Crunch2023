@@ -6,6 +6,8 @@
 #include "Item.h"
 #include "Components/WrapBox.h"
 #include "ItemInventoryItemSlotWidget.h"
+#include "ItemInventoryItemSlotWidget.h"
+
 
 void UInventoryWidget::NativeConstruct()
 {
@@ -51,6 +53,7 @@ void UInventoryWidget::BuildGrid()
 	for (int i = 0; i < capacity; ++i)
 	{
 		UItemInventoryItemSlotWidget* newSlot = CreateWidget<UItemInventoryItemSlotWidget>(SlotWrapBox, SlotClass);
+		newSlot->onSwapRequested.AddUObject(this, &UInventoryWidget::SwapItems);
 		newSlot->onItemActivated.AddUObject(OwningInventoryComp, &UInventoryComponent::ItemActivated);
 		newSlot->onItemSold.AddUObject(OwningInventoryComp, &UInventoryComponent::ItemSold);
 		newSlot->bIsFocusable = true;
@@ -58,4 +61,13 @@ void UInventoryWidget::BuildGrid()
 		SlotWrapBox->AddChildToWrapBox(newSlot);
 
 	}
+}
+
+void UInventoryWidget::SwapItems(UItemInventoryItemSlotWidget* itemA, UItemInventoryItemSlotWidget* itemB)
+{
+	FInventoryItemSpec* specA = OwningInventoryComp->GetItemSpec(itemA->GetHandle());
+	FInventoryItemSpec* specB = OwningInventoryComp->GetItemSpec(itemB->GetHandle());
+	itemA->AssignItem(specB);
+	itemB->AssignItem(specA);
+
 }

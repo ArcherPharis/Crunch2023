@@ -68,6 +68,12 @@ void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	// ...
 }
 
+FInventoryItemSpec* UInventoryComponent::GetItemSpec(int handle)
+{
+	return ItemContainer.Find(handle);
+}
+
+
 void UInventoryComponent::GiveItem(const UItem* itemCDO)
 {
 

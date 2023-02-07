@@ -14,7 +14,7 @@ void UShopItemWidget::NativeOnListItemObjectSet(UObject* ListItemObject)
 
 void UShopItemWidget::LeftClicked()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Left Button Dragged"));
+	UE_LOG(LogTemp, Warning, TEXT("Left Button Clicked"));
 }
 
 void UShopItemWidget::RightClicked()

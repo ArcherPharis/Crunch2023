@@ -28,6 +28,15 @@ void UItemWidgetBase::InitFromItem(const UItem* item)
 	UE_LOG(LogTemp, Warning, TEXT("Reaching here: %s"), *item->GetName());
 }
 
+void UItemWidgetBase::InitFromOther(UItemWidgetBase* otherWidget)
+{
+	UTexture* otherTexture;
+	otherWidget->GetIcon()->GetDynamicMaterial()->GetTextureParameterValue(IconTexturePropertyName, otherTexture);
+	SetIconTexture(otherTexture);
+	UE_LOG(LogTemp, Warning, TEXT("getting texture %s"), *otherTexture->GetName());
+}
+
+
 FReply UItemWidgetBase::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
 	if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
@@ -61,7 +70,7 @@ FReply UItemWidgetBase::NativeOnMouseButtonUp(const FGeometry& InGeometry, const
 	return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 }
 
-void UItemWidgetBase::SetIconTexture(UTexture2D* texture)
+void UItemWidgetBase::SetIconTexture(UTexture* texture)
 {
 
 	GetIcon()->GetDynamicMaterial()->SetTextureParameterValue(IconTexturePropertyName, texture);

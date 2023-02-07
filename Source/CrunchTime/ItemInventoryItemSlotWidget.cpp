@@ -9,10 +9,19 @@
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "InventoryItemSpec.h"
+#include "Blueprint/DragDropOperation.h"
 
 void UItemInventoryItemSlotWidget::AssignItem(FInventoryItemSpec* spec)
 {
+
+	if (spec == nullptr)
+	{
+		EmptySlot();
+		return;
+	}
+
 	InitFromItem(spec->GetItem());
+	spec->onStackChanged.Clear();
 	spec->onStackChanged.AddDynamic(this, &UItemInventoryItemSlotWidget::StackChanged);
 	bisEmpty = false;
 	ItemSpecHandle = spec->GetHandle();
@@ -126,6 +135,55 @@ void UItemInventoryItemSlotWidget::RightClicked()
 	{
 		ShowRightMenu();
 	}
+}
+
+void UItemInventoryItemSlotWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
+{
+	Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+	UE_LOG(LogTemp, Warning, TEXT("Drag Detected"));
+	UDragDropOperation* newOperation = NewObject<UDragDropOperation>(this);
+	UItemWidgetBase* dragVisual = CreateWidget<UItemWidgetBase>(GetOwningPlayer(), DragVisualClass);
+	newOperation->Payload = this;
+	dragVisual->InitFromOther(this);
+	newOperation->DefaultDragVisual = dragVisual;
+	OutOperation = newOperation;
+}
+
+void UItemInventoryItemSlotWidget::NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDragEnter(InGeometry, InDragDropEvent, InOperation);
+	
+}
+
+void UItemInventoryItemSlotWidget::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDragLeave(InDragDropEvent, InOperation);
+	UE_LOG(LogTemp, Warning, TEXT("Drag Leaving"));
+}
+
+bool UItemInventoryItemSlotWidget::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Drag Over"));
+	return true;
+}
+
+bool UItemInventoryItemSlotWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Drop Detected"));
+
+	if (InOperation)
+	{
+		UItemInventoryItemSlotWidget* otherSlotWidget =  Cast<UItemInventoryItemSlotWidget>(InOperation->Payload);
+		onSwapRequested.Broadcast(this, otherSlotWidget);
+	}
+
+	return true;
+}
+
+void UItemInventoryItemSlotWidget::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+	Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
+	UE_LOG(LogTemp, Warning, TEXT("Drag Cancelled"));
 }
 
 
