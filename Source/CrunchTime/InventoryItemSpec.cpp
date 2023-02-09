@@ -2,6 +2,7 @@
 
 
 #include "InventoryItemSpec.h"
+#include "GameplayEffect.h"
 #include "Item.h"
 
 FInventoryItemSpec::FInventoryItemSpec(): ItemCDO{nullptr}, PassiveEffectHandle{}, stackCount{0}, handle{INDEX_NONE}
@@ -45,6 +46,29 @@ bool FInventoryItemSpec::PopStack()
 	--stackCount;
 	onStackChanged.Broadcast(stackCount);
 	return stackCount > 0;
+}
+
+const UGameplayEffect* FInventoryItemSpec::GetItemPassiveEffect() const
+{
+
+	auto passiveEffect = ItemCDO->GetPassiveGameplayEffect();
+
+	if (passiveEffect)
+	{
+		return passiveEffect.GetDefaultObject();
+	}
+	return nullptr;
+}
+
+const TSubclassOf<UGameplayAbility> FInventoryItemSpec::GetGrantedAbilityClass() const
+{
+	const UGameplayEffect* passiveEffectCDO = GetItemPassiveEffect();
+
+	if (passiveEffectCDO && passiveEffectCDO->GrantedAbilities.Num() != 0)
+	{
+		return passiveEffectCDO->GrantedAbilities[0].Ability;
+	}
+	return TSubclassOf<UGameplayAbility>();
 }
 
 int FInventoryItemSpec::CreateNewHandle() const

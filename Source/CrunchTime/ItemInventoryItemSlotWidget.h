@@ -37,9 +37,13 @@ public:
 	FOnItemActivated onItemActivated;
 	FOnItemSelled onItemSold;
 
+	UFUNCTION()
+	void UseItem();
+
 private:
 	bool bisEmpty = true;
 	virtual void NativeConstruct() override;
+	void AbilityActivated(class UGameplayAbility* ability);
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* StackText;
@@ -58,14 +62,13 @@ private:
 	void HideRightMenu();
 	void ShowRightMenu();
 
-	
+	void ActivateGrantedAbilityFromSpec(FInventoryItemSpec* spec);
 
 	UFUNCTION()
 	void StackChanged(int newStackCount);
 	UFUNCTION()
 	void SellItem();
-	UFUNCTION()
-	void UseItem();
+
 
 	virtual void LeftClicked() override;
 	virtual void RightClicked() override;
@@ -79,4 +82,23 @@ private:
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	virtual void NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	
+
+	void UpdateAbilityInfoFromSpec(const FInventoryItemSpec* spec);
+	TSubclassOf<UGameplayAbility> GrantedAbilityClass;
+
+	void StartAbilityCooldown();
+
+	FTimerHandle CooldownTimerHandle;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Item")
+	float CooldownUpdateRate = 0.1f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Item")
+	FName CooldownMaterialPropertyName;
+
+	float coolDownDuration;
+	float coolDownTimeRemaining;
+
+	UFUNCTION()
+	void UpdateItemCooldown();
 };

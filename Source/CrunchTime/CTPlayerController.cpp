@@ -56,7 +56,56 @@ void ACTPlayerController::SetupInputComponent()
 
 		FInputActionBinding& ShopInputBinding = InputComponent->BindAction("Shop", IE_Pressed, this, &ACTPlayerController::ToggleShop);
 		ShopInputBinding.bExecuteWhenPaused = true;
+
+		InputComponent->BindAction("ActivateItemOne", IE_Pressed, this, &ACTPlayerController::ActivateItemOne);
+		InputComponent->BindAction("ActivateItemTwo", IE_Pressed, this, &ACTPlayerController::ActivateItemTwo);
+		InputComponent->BindAction("ActivateItemThree", IE_Pressed, this, &ACTPlayerController::ActivateItemThree);
+		InputComponent->BindAction("ActivateItemFour", IE_Pressed, this, &ACTPlayerController::ActivateItemFour);
+		InputComponent->BindAction("ActivateItemFive", IE_Pressed, this, &ACTPlayerController::ActivateItemFive);
+		InputComponent->BindAction("ActivateItemSix", IE_Pressed, this, &ACTPlayerController::ActivateItemSix);
+
+
 	}
+}
+
+void ACTPlayerController::ActivateInventoryItem(int itemIndex)
+{
+	inGameUI->ActivateInventoryItem(itemIndex);
+}
+
+void ACTPlayerController::ActivateItemOne()
+{
+	ActivateInventoryItem(0);
+}
+
+void ACTPlayerController::ActivateItemTwo()
+{
+	ActivateInventoryItem(1);
+
+}
+
+void ACTPlayerController::ActivateItemThree()
+{
+	ActivateInventoryItem(2);
+
+}
+
+void ACTPlayerController::ActivateItemFour()
+{
+	ActivateInventoryItem(3);
+
+}
+
+void ACTPlayerController::ActivateItemFive()
+{
+	ActivateInventoryItem(4);
+
+}
+
+void ACTPlayerController::ActivateItemSix()
+{
+	ActivateInventoryItem(5);
+
 }
 
 void ACTPlayerController::HealthUpdated(const FOnAttributeChangeData& AttributeData)

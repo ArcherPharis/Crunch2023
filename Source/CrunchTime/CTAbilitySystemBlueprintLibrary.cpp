@@ -2,6 +2,7 @@
 
 
 #include "CTAbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 
 FName UCTAbilitySystemBlueprintLibrary::GetTagNameLast(const FGameplayTag& Tag)
 {
@@ -25,4 +26,19 @@ FName UCTAbilitySystemBlueprintLibrary::GetRandomNameFromTagContainer(const FGam
 	int comboPickIndex = FMath::RandRange(0, tagCount - 1);
 	FGameplayTag pickedTag = container.GetByIndex(comboPickIndex);
 	return GetTagNameLast(pickedTag);
+}
+
+void UCTAbilitySystemBlueprintLibrary::GetAbilityCooldownDurationAndTimeRemaining(TSubclassOf<UGameplayAbility> abilityClass, AActor* Caster, float& outDuration, float& outCooldownRemaining)
+{
+	outDuration = outCooldownRemaining = 0;
+	UAbilitySystemComponent* ASC =  GetAbilitySystemComponent(Caster);
+
+	if (!ASC) return;
+
+	FGameplayAbilitySpec* abilitySpec = ASC->FindAbilitySpecFromClass(abilityClass);
+
+	if (!abilitySpec) return;
+
+	abilitySpec->Ability->GetCooldownTimeRemainingAndDuration(abilitySpec->Handle, ASC->AbilityActorInfo.Get(), outCooldownRemaining, outDuration);
+
 }

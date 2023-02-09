@@ -19,4 +19,5 @@ public:
 	*/
 	static FName GetTagNameLast(const FGameplayTag& Tag);
 	static FName GetRandomNameFromTagContainer(const FGameplayTagContainer& container);
+	static void GetAbilityCooldownDurationAndTimeRemaining(TSubclassOf<UGameplayAbility> abilityClass, AActor* Caster, float& outDuration, float& outCooldownRemaining);
 };

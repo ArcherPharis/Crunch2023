@@ -79,4 +79,14 @@ private:
 private:
 	/** Allows the PlayerController to set up custom input bindings. */
 	virtual void SetupInputComponent() override;
+
+	void ActivateInventoryItem(int itemIndex);
+
+	void ActivateItemOne();
+	void ActivateItemTwo();
+	void ActivateItemThree();
+	void ActivateItemFour();
+	void ActivateItemFive();
+	void ActivateItemSix();
+
 };

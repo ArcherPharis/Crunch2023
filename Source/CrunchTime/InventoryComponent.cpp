@@ -24,6 +24,8 @@ void UInventoryComponent::ItemActivated(int itemHandle)
 	if (spec)
 	{
 		ApplyItemActiveEffect(spec->GetItem());
+		ActivateGrantedAbilityFromSpec(spec);
+		UE_LOG(LogTemp, Warning, TEXT("ActivatingItem: %s"), *spec->GetItem()->GetName());
 		if (spec->IsConsumable() && !spec->PopStack())
 		{
 			onItemChanged.Broadcast(spec, false);
@@ -41,8 +43,9 @@ void UInventoryComponent::ItemSold(int itemHandle)
 		bool found;
 		float avaliableCredit = OwnerAbilitySystemComp->GetGameplayAttributeValue(UCTAttributeSet::GetcreditAttribute(), found);
 		OwnerAbilitySystemComp->SetNumericAttributeBase(UCTAttributeSet::GetcreditAttribute(), avaliableCredit + price/2);
-		if (spec->IsConsumable() && !spec->PopStack())
+		if (!spec->PopStack())
 		{
+			RemoveEffectFromSpec(spec);
 			onItemChanged.Broadcast(spec, false);
 			ItemContainer.Remove(itemHandle);
 		}
@@ -144,5 +147,30 @@ FActiveGameplayEffectHandle UInventoryComponent::ApplyGameplayEffectToOwner(TSub
 		return OwnerAbilitySystemComp->ApplyGameplayEffectSpecToSelf(*spec.Data);
 	}
 	return FActiveGameplayEffectHandle();
+}
+
+void UInventoryComponent::RemoveEffectFromSpec(FInventoryItemSpec* spec)
+{
+	for (FActiveGameplayEffectHandle handle : spec->GetActiveEffects())
+	{
+		OwnerAbilitySystemComp->RemoveActiveGameplayEffect(handle);
+	}
+}
+
+void UInventoryComponent::ActivateGrantedAbilityFromSpec(FInventoryItemSpec* spec)
+{
+	const UItem* item = spec->GetItem();
+	UGameplayEffect* effectItm = item->GetPassiveGameplayEffect().GetDefaultObject();
+	if (!effectItm) return;
+
+	for (const FGameplayAbilitySpecDef& specDef : effectItm->GrantedAbilities)
+	{
+		OwnerAbilitySystemComp->TryActivateAbilityByClass(specDef.Ability);
+	}
+
+	
+
+	
+	
 }
 

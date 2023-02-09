@@ -10,6 +10,10 @@
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "InventoryItemSpec.h"
 #include "Blueprint/DragDropOperation.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
+#include "Item.h"
+#include "CTAbilitySystemBlueprintLibrary.h"
 
 void UItemInventoryItemSlotWidget::AssignItem(FInventoryItemSpec* spec)
 {
@@ -22,13 +26,14 @@ void UItemInventoryItemSlotWidget::AssignItem(FInventoryItemSpec* spec)
 
 	InitFromItem(spec->GetItem());
 	spec->onStackChanged.Clear();
+	UpdateAbilityInfoFromSpec(spec);
 	spec->onStackChanged.AddDynamic(this, &UItemInventoryItemSlotWidget::StackChanged);
 	bisEmpty = false;
 	ItemSpecHandle = spec->GetHandle();
 	if (spec->IsStackable())
 	{
 		StackText->SetVisibility(ESlateVisibility::Visible);
-		StackChanged(1);
+		StackChanged(spec->GetStackCount());
 	}
 	else
 	{
@@ -52,6 +57,21 @@ void UItemInventoryItemSlotWidget::NativeConstruct()
 	Super::NativeConstruct();
 	EmptySlot();
 	SpawnRightClickMenu();
+	UAbilitySystemComponent* abilitySystemComponent =  UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetOwningPlayerPawn());
+
+	if (abilitySystemComponent)
+	{
+		abilitySystemComponent->AbilityCommittedCallbacks.AddUObject(this, &UItemInventoryItemSlotWidget::AbilityActivated);
+	}
+}
+
+void UItemInventoryItemSlotWidget::AbilityActivated(UGameplayAbility* ability)
+{
+	if (GrantedAbilityClass && ability->GetClass() == GrantedAbilityClass)
+	{
+		UCTAbilitySystemBlueprintLibrary::GetAbilityCooldownDurationAndTimeRemaining(GrantedAbilityClass, GetOwningPlayerPawn(), coolDownDuration, coolDownTimeRemaining);
+		StartAbilityCooldown();
+	}
 }
 
 void UItemInventoryItemSlotWidget::EmptySlot()
@@ -59,6 +79,7 @@ void UItemInventoryItemSlotWidget::EmptySlot()
 	SetIconTexture(EmptyTexture);
 	StackText->SetVisibility(ESlateVisibility::Hidden);
 	ItemSpecHandle = INDEX_NONE;
+	GrantedAbilityClass = TSubclassOf<UGameplayAbility>();
 
 }
 
@@ -104,6 +125,7 @@ void UItemInventoryItemSlotWidget::ShowRightMenu()
 
 	RightMenuWidget->SetVisibility(ESlateVisibility::Visible);
 }
+
 
 void UItemInventoryItemSlotWidget::StackChanged(int newStackCount)
 {
@@ -184,6 +206,40 @@ void UItemInventoryItemSlotWidget::NativeOnDragCancelled(const FDragDropEvent& I
 {
 	Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
 	UE_LOG(LogTemp, Warning, TEXT("Drag Cancelled"));
+}
+
+void UItemInventoryItemSlotWidget::UpdateAbilityInfoFromSpec(const FInventoryItemSpec* spec)
+{
+	GrantedAbilityClass = spec->GetGrantedAbilityClass();
+	UCTAbilitySystemBlueprintLibrary::GetAbilityCooldownDurationAndTimeRemaining(GrantedAbilityClass, GetOwningPlayerPawn(), coolDownDuration, coolDownTimeRemaining);
+
+	if (coolDownTimeRemaining != 0)
+	{
+		StartAbilityCooldown();
+	}
+}
+
+void UItemInventoryItemSlotWidget::StartAbilityCooldown()
+{
+	UE_LOG(LogTemp, Warning, TEXT("ABILITY COOLDOWN STARTED"));
+	GetWorld()->GetTimerManager().SetTimer(CooldownTimerHandle, this, &UItemInventoryItemSlotWidget::UpdateItemCooldown, CooldownUpdateRate, true);
+}
+
+void UItemInventoryItemSlotWidget::UpdateItemCooldown()
+{
+	coolDownTimeRemaining -= CooldownUpdateRate;
+	if (coolDownTimeRemaining > 0)
+	{
+		float coolDownPercentage = 1 - coolDownTimeRemaining / coolDownDuration;
+		UE_LOG(LogTemp, Warning, TEXT("remaining: %f, duration: %f"), coolDownTimeRemaining, coolDownDuration);
+		GetIcon()->GetDynamicMaterial()->SetScalarParameterValue(CooldownMaterialPropertyName, coolDownPercentage);
+
+	}
+	else
+	{
+		GetIcon()->GetDynamicMaterial()->SetScalarParameterValue(CooldownMaterialPropertyName, 1);
+		GetWorld()->GetTimerManager().ClearTimer(CooldownTimerHandle);
+	}
 }
 
 

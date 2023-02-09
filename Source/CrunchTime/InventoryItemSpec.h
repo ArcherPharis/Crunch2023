@@ -21,6 +21,8 @@ struct CRUNCHTIME_API FInventoryItemSpec
 public:
 	FInventoryItemSpec();
 
+	TArray <FActiveGameplayEffectHandle> GetActiveEffects() const { return PassiveEffectHandle; }
+
 	//copy constructor
 	FInventoryItemSpec(const FInventoryItemSpec& rhs);
 
@@ -33,9 +35,13 @@ public:
 	bool IsConsumable() const;
 	void PushStack();
 	bool PopStack();
+	int GetStackCount() const { return stackCount; }
 
 	FORCEINLINE bool IsValid() const { return handle != INDEX_NONE; }
 	FORCEINLINE int GetHandle() const { return handle; }
+
+	const class UGameplayEffect* GetItemPassiveEffect() const;
+	const TSubclassOf<class UGameplayAbility> GetGrantedAbilityClass() const;
 
 	FOnStackChanged onStackChanged;
 

@@ -64,5 +64,7 @@ private:
 
 	FActiveGameplayEffectHandle ApplyGameplayEffectToOwner(TSubclassOf<class UGameplayEffect> effectToApply) const;
 
-		
+	void RemoveEffectFromSpec(FInventoryItemSpec* spec);
+
+	void ActivateGrantedAbilityFromSpec(FInventoryItemSpec* spec);
 };

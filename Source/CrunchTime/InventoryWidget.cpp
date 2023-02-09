@@ -9,6 +9,12 @@
 #include "ItemInventoryItemSlotWidget.h"
 
 
+void UInventoryWidget::ActivateItem(uint8 itemIndex)
+{
+	if (itemIndex >= Slots.Num()) return;
+	Slots[itemIndex]->UseItem();
+}
+
 void UInventoryWidget::NativeConstruct()
 {
 	Super:: NativeConstruct();

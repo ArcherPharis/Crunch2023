@@ -14,6 +14,10 @@ class CRUNCHTIME_API UInventoryWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	UFUNCTION(BlueprintCallable, Category = "Inventory")
+	void ActivateItem(uint8 itemIndex);
+
 protected:
 	virtual void NativeConstruct() override;
 

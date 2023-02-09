@@ -23,6 +23,9 @@ public:
 	void UpdateAbility(UGameplayAbility* Ability);
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
+	void ActivateInventoryItem(int itemIndex);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")
 	void LevelUpUI();
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "InGameUI")

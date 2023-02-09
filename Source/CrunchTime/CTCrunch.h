@@ -39,6 +39,8 @@ private:
 	void MoveRight(float amt);
 	void LookUp(float amt);
 	void Turn(float amt);
+
+	void ActivateInventoryItem(int item);
 	
 	/* - Zoom - */
 	void Zoom(float amt);
