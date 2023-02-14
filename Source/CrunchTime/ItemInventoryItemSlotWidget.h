@@ -40,6 +40,9 @@ public:
 	UFUNCTION()
 	void UseItem();
 
+	UFUNCTION()
+	void UpdateItemCooldown();
+
 private:
 	bool bisEmpty = true;
 	virtual void NativeConstruct() override;
@@ -99,6 +102,5 @@ private:
 	float coolDownDuration;
 	float coolDownTimeRemaining;
 
-	UFUNCTION()
-	void UpdateItemCooldown();
+
 };

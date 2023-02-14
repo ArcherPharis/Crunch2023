@@ -23,7 +23,7 @@ void UItemInventoryItemSlotWidget::AssignItem(FInventoryItemSpec* spec)
 		EmptySlot();
 		return;
 	}
-
+	
 	InitFromItem(spec->GetItem());
 	spec->onStackChanged.Clear();
 	UpdateAbilityInfoFromSpec(spec);
@@ -40,6 +40,8 @@ void UItemInventoryItemSlotWidget::AssignItem(FInventoryItemSpec* spec)
 		StackText->SetVisibility(ESlateVisibility::Hidden);
 
 	}
+
+	UpdateItemCooldown();
 }
 
 bool UItemInventoryItemSlotWidget::IsEmpty() const
@@ -77,6 +79,7 @@ void UItemInventoryItemSlotWidget::AbilityActivated(UGameplayAbility* ability)
 void UItemInventoryItemSlotWidget::EmptySlot()
 {
 	SetIconTexture(EmptyTexture);
+	
 	StackText->SetVisibility(ESlateVisibility::Hidden);
 	ItemSpecHandle = INDEX_NONE;
 	GrantedAbilityClass = TSubclassOf<UGameplayAbility>();
@@ -136,7 +139,11 @@ void UItemInventoryItemSlotWidget::StackChanged(int newStackCount)
 void UItemInventoryItemSlotWidget::SellItem()
 {
 	onItemSold.Broadcast(ItemSpecHandle);
+	GetWorld()->GetTimerManager().ClearTimer(CooldownTimerHandle);
+	GetIcon()->GetDynamicMaterial()->SetScalarParameterValue("Percent", 1);
 	HideRightMenu();
+	
+	
 }
 
 void UItemInventoryItemSlotWidget::UseItem()

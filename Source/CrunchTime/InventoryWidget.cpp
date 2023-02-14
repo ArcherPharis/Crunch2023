@@ -32,6 +32,7 @@ void UInventoryWidget::ItemChanged(FInventoryItemSpec* spec, bool bWasAdded)
 			if (slot->IsEmpty())
 			{
 				slot->AssignItem(spec);
+				slot->UpdateItemCooldown();
 				break;
 			}
 		}
